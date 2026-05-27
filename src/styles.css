@@ -44,6 +44,12 @@ a {
   -webkit-tap-highlight-color: transparent;
 }
 
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
 .appShell {
   min-height: 100vh;
 }
@@ -154,8 +160,7 @@ h3 {
 }
 
 .primaryButton,
-.iconButton,
-.rowButton {
+.iconButton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -188,13 +193,11 @@ h3 {
 }
 
 .primaryButton:hover,
-.iconButton:hover,
-.rowButton:hover {
+.iconButton:hover {
   transform: translateY(-1px);
 }
 
-.iconButton:hover,
-.rowButton:hover {
+.iconButton:hover {
   border-color: var(--blue);
   color: var(--blue);
 }
@@ -411,7 +414,7 @@ h3 {
 .resultsTable {
   --choice-column-width: 220px;
   --rank-column-width: 68px;
-  min-width: 1040px;
+  min-width: 960px;
   border-collapse: separate;
   border-spacing: 0;
   table-layout: fixed;
@@ -594,9 +597,7 @@ h3 {
 .resultsTable th:nth-child(7),
 .resultsTable td:nth-child(7),
 .resultsTable th:nth-child(8),
-.resultsTable td:nth-child(8),
-.resultsTable th:nth-child(9),
-.resultsTable td:nth-child(9) {
+.resultsTable td:nth-child(8) {
   width: 94px;
   min-width: 94px;
 }
@@ -645,6 +646,26 @@ h3 {
   flex: 0 0 auto;
 }
 
+.choiceDetailButton {
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.choiceDetailButton:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
 .scoreCell {
   min-width: 170px;
 }
@@ -676,14 +697,6 @@ h3 {
   font-size: 12px;
 }
 
-.rowButton {
-  min-width: 94px;
-  height: 32px;
-  gap: 6px;
-  padding: 0 10px;
-  font-weight: 800;
-}
-
 .positive {
   color: var(--green);
   font-weight: 760;
@@ -704,11 +717,11 @@ h3 {
 }
 
 .matrixTable {
-  min-width: 420px;
+  min-width: 400px;
 }
 
 .matrixTable th:first-child {
-  width: 190px;
+  width: 150px;
 }
 
 .matrixTable th button {
@@ -737,7 +750,8 @@ h3 {
 }
 
 .matrixTable td {
-  min-width: 74px;
+  min-width: 54px;
+  padding: 10px 8px;
   text-align: center;
 }
 
@@ -1350,6 +1364,7 @@ h3 {
 
 @media (max-width: 640px) {
   .topBar {
+    position: static;
     padding: 14px;
   }
 
@@ -1383,7 +1398,7 @@ h3 {
 
   .voteTableHeader,
   .voteRow {
-    grid-template-columns: minmax(0, 1fr) 94px;
+    grid-template-columns: minmax(0, 1fr) 120px;
   }
 
   .countdownGrid {

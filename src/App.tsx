@@ -12,7 +12,8 @@ import {
   Trophy,
   X
 } from "lucide-react";
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import type { FormEvent, ReactNode } from "react";
 import { fetchSnapshotDataset } from "./api/snapshot";
 import { normalizeEthereumAddress } from "./api/ens";
 import { useEnsNames, type EnsLookupMap } from "./hooks/useEnsNames";
@@ -254,12 +255,7 @@ function App(): JSX.Element {
 
           <section className="contentGrid">
             <div className="mainPanel">
-              <div className="sectionHeader">
-                <div>
-                  <div className="eyebrow">Results</div>
-                  <h2>Ranked choices</h2>
-                </div>
-              </div>
+              <PanelHeader eyebrow="Results" title="Ranked choices" />
               <ResultsTable
                 result={result}
                 onSelectChoice={(choiceId) => setSelectedChoiceId(choiceId)}
@@ -267,21 +263,21 @@ function App(): JSX.Element {
             </div>
 
             <aside className="sidePanel">
-              <div className="sectionHeader">
-                <div>
-                  <div className="eyebrow">Pairwise</div>
-                  <h2>Matrix</h2>
-                </div>
-                <button
-                  type="button"
-                  className="iconButton"
-                  onClick={() => setIsMatrixOpen(true)}
-                  aria-label="Open matrix full screen"
-                  title="Open full screen"
-                >
-                  <Maximize2 size={17} />
-                </button>
-              </div>
+              <PanelHeader
+                eyebrow="Pairwise"
+                title="Matrix"
+                actions={(
+                  <button
+                    type="button"
+                    className="iconButton"
+                    onClick={() => setIsMatrixOpen(true)}
+                    aria-label="Open matrix full screen"
+                    title="Open full screen"
+                  >
+                    <Maximize2 size={17} />
+                  </button>
+                )}
+              />
               <PairwiseMatrix
                 result={result}
                 onSelectChoice={(choiceId) => setSelectedChoiceId(choiceId)}
@@ -385,6 +381,26 @@ function CountdownUnit({
   );
 }
 
+function PanelHeader({
+  eyebrow,
+  title,
+  actions
+}: {
+  eyebrow: string;
+  title: string;
+  actions?: ReactNode;
+}): JSX.Element {
+  return (
+    <div className="sectionHeader">
+      <div>
+        <div className="eyebrow">{eyebrow}</div>
+        <h2>{title}</h2>
+      </div>
+      {actions}
+    </div>
+  );
+}
+
 function LoadingState(): JSX.Element {
   return (
     <main className="dashboard">
@@ -453,7 +469,6 @@ function ResultsTable({
                 Average pairwise margin for this choice. Positive means it tends to beat opponents.
               </HeaderTooltip>
             </th>
-            <th>Details</th>
           </tr>
         </thead>
         <tbody>
@@ -475,6 +490,17 @@ function ResultsTable({
                     <span className="choiceNumber">{choice.index + 1}</span>
                     <span>{choice.name}</span>
                     {choice.rank === 1 && <Trophy size={15} className="winnerIcon" />}
+                    <button
+                      className="choiceDetailButton"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        onSelectChoice(choice.id);
+                      }}
+                      aria-label={`Open details for ${choice.name}`}
+                      title="Open details"
+                    >
+                      <ChevronRight size={16} />
+                    </button>
                   </div>
                 </td>
                 <td className="scoreCell">
@@ -496,19 +522,6 @@ function ResultsTable({
                 <td>{formatCompact(choice.averageSupport)}</td>
                 <td className={choice.averageMargin >= 0 ? "positive" : "negative"}>
                   {formatSigned(choice.averageMargin)}
-                </td>
-                <td>
-                  <button
-                    className="rowButton"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      onSelectChoice(choice.id);
-                    }}
-                    aria-label={`Open details for ${choice.name}`}
-                  >
-                    <span>Details</span>
-                    <ChevronRight size={18} />
-                  </button>
                 </td>
               </tr>
             );
@@ -588,7 +601,10 @@ function PairwiseMatrix({
           {result.choices.map((choice) => (
             <tr key={choice.id}>
               <th>
-                <button onClick={() => onSelectChoice(choice.id)}>
+                <button
+                  onClick={() => onSelectChoice(choice.id)}
+                  aria-label={`Open details for choice ${choice.index + 1}: ${choice.name}`}
+                >
                   <span>{choice.index + 1}</span>
                   {choice.name}
                 </button>
@@ -714,19 +730,19 @@ function TopVotes({
 
   return (
     <section className="mainPanel">
-      <div className="sectionHeader">
-        <div>
-          <div className="eyebrow">Votes</div>
-          <h2>All ranked ballots</h2>
-        </div>
-        <div className="voteStats">
-          <span>{formatNumber(votes.length, 0)} votes</span>
-          <span>{formatCompact(result.totalVotingPower)} voting power</span>
-          {result.invalidVotes.length > 0 && (
-            <span>{formatNumber(result.invalidVotes.length, 0)} invalid</span>
-          )}
-        </div>
-      </div>
+      <PanelHeader
+        eyebrow="Votes"
+        title="All ranked ballots"
+        actions={(
+          <div className="voteStats">
+            <span>{formatNumber(votes.length, 0)} votes</span>
+            <span>{formatCompact(result.totalVotingPower)} voting power</span>
+            {result.invalidVotes.length > 0 && (
+              <span>{formatNumber(result.invalidVotes.length, 0)} invalid</span>
+            )}
+          </div>
+        )}
+      />
       <div className="voteTableHeader">
         <div>Voter</div>
         <button
