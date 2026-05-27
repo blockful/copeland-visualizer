@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Copeland Snapshot Visualizer</title>
+  <desc id="desc">Clean Open Graph preview for a Snapshot Copeland vote visualizer by blockful.</desc>
+  <rect width="1200" height="630" fill="#f8fafc" />
+  <rect x="64" y="64" width="1072" height="502" rx="28" fill="#ffffff" stroke="#d9e2ec" />
+  <text x="104" y="134" fill="#2563eb" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800">blockful</text>
+  <text x="104" y="246" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="72" font-weight="850">Copeland Snapshot</text>
+  <text x="104" y="330" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="72" font-weight="850">Visualizer</text>
+  <text x="104" y="398" fill="#64748b" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="600">Ranked-choice results and pairwise matchups.</text>
+  <rect x="104" y="452" width="156" height="46" rx="12" fill="#eff6ff" />
+  <text x="130" y="484" fill="#2563eb" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800">Copeland</text>
+  <rect x="282" y="452" width="126" height="46" rx="12" fill="#f1f5f9" />
+  <text x="308" y="484" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800">Snapshot</text>
+  <g transform="translate(824 148)">
+    <rect width="272" height="324" rx="22" fill="#f8fafc" stroke="#d9e2ec" />
+    <rect x="30" y="36" width="212" height="36" rx="10" fill="#dbeafe" />
+    <rect x="30" y="96" width="176" height="36" rx="10" fill="#e2e8f0" />
+    <rect x="30" y="156" width="132" height="36" rx="10" fill="#e2e8f0" />
+    <rect x="30" y="216" width="96" height="36" rx="10" fill="#e2e8f0" />
+    <circle cx="218" cy="234" r="28" fill="#dcfce7" />
+    <path d="M206 234l8 8 18-20" fill="none" stroke="#16a34a" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+</svg>
