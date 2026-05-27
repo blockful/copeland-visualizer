@@ -469,7 +469,6 @@ function ResultsTable({
                     <span className="choiceNumber">{choice.index + 1}</span>
                     <span>{choice.name}</span>
                     {choice.rank === 1 && <Trophy size={15} className="winnerIcon" />}
-                    <span className="detailsHint">View details</span>
                   </div>
                 </td>
                 <td className="scoreCell">
