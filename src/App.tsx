@@ -12,8 +12,9 @@ import {
   Trophy,
   X
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { FormEvent, ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { fetchSnapshotDataset } from "./api/snapshot";
 import { normalizeEthereumAddress } from "./api/ens";
 import { useEnsNames, type EnsLookupMap } from "./hooks/useEnsNames";
@@ -483,7 +484,6 @@ function ResultsTable({
                   <div className="choiceName">
                     <span className="choiceNumber">{choice.index + 1}</span>
                     <span>{choice.name}</span>
-                    {choice.rank === 1 && <Trophy size={15} className="winnerIcon" />}
                     <button
                       className="choiceDetailButton"
                       onClick={(event) => {
@@ -545,30 +545,103 @@ function HeaderTooltip({
   children: string;
 }): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
+  const [position, setPosition] = useState<{
+    left: number;
+    placement: "top" | "bottom";
+    top: number;
+    width: number;
+  } | null>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const tooltipId = useId();
+
+  function updatePosition() {
+    const button = buttonRef.current;
+
+    if (!button) {
+      return;
+    }
+
+    const rect = button.getBoundingClientRect();
+    const width = Math.min(260, window.innerWidth - 24);
+    const left = Math.min(
+      Math.max(rect.left + rect.width / 2 - width / 2, 12),
+      window.innerWidth - width - 12
+    );
+    const hasRoomAbove = rect.top > 120;
+
+    setPosition({
+      left,
+      placement: hasRoomAbove ? "top" : "bottom",
+      top: hasRoomAbove ? rect.top - 8 : rect.bottom + 8,
+      width
+    });
+  }
+
+  function openTooltip() {
+    updatePosition();
+    setIsOpen(true);
+  }
+
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    updatePosition();
+    window.addEventListener("resize", updatePosition);
+    window.addEventListener("scroll", updatePosition, true);
+
+    return () => {
+      window.removeEventListener("resize", updatePosition);
+      window.removeEventListener("scroll", updatePosition, true);
+    };
+  }, [isOpen]);
 
   return (
     <span
       className={isOpen ? "headerTooltip open" : "headerTooltip"}
-      onMouseEnter={() => setIsOpen(true)}
+      onMouseEnter={openTooltip}
       onMouseLeave={() => setIsOpen(false)}
-      onFocus={() => setIsOpen(true)}
+      onFocus={openTooltip}
       onBlur={() => setIsOpen(false)}
     >
       <span>{label}</span>
       <button
+        ref={buttonRef}
         type="button"
         aria-label={`${label}: ${children}`}
+        aria-describedby={isOpen ? tooltipId : undefined}
         aria-expanded={isOpen}
         onClick={(event) => {
           event.stopPropagation();
-          setIsOpen((current) => !current);
+          setIsOpen((current) => {
+            if (!current) {
+              updatePosition();
+            }
+
+            return !current;
+          });
         }}
       >
         ?
       </button>
-      <span className="tooltipBubble" role="tooltip">
-        {children}
-      </span>
+      {isOpen && position
+        ? createPortal(
+          <span
+            className={`tooltipBubble ${position.placement}`}
+            id={tooltipId}
+            role="tooltip"
+            style={{
+              left: position.left,
+              top: position.top,
+              width: position.width
+            }}
+          >
+            {children}
+          </span>,
+          document.body
+        )
+        : null}
     </span>
   );
 }
@@ -820,9 +893,15 @@ function DetailsDrawer({
     return <></>;
   }
 
-  const matches = result.matches.filter(
-    (match) => match.choiceA === choice.id || match.choiceB === choice.id
-  );
+  const choiceId = choice.id;
+
+  function getSelectedSupport(match: PairwiseMatch) {
+    return match.choiceA === choiceId ? match.supportA : match.supportB;
+  }
+
+  const matches = result.matches
+    .filter((match) => match.choiceA === choiceId || match.choiceB === choiceId)
+    .sort((a, b) => getSelectedSupport(b) - getSelectedSupport(a) || a.id.localeCompare(b.id));
 
   function copyAddress(address: string) {
     void copyTextToClipboard(address).finally(() => {

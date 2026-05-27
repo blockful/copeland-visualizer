@@ -396,7 +396,7 @@ h3 {
 .resultsTable {
   --choice-column-width: 220px;
   --rank-column-width: 68px;
-  min-width: 960px;
+  min-width: 1000px;
   border-collapse: separate;
   border-spacing: 0;
   table-layout: fixed;
@@ -424,13 +424,13 @@ h3 {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
 }
 
 .headerTooltip button {
   display: inline-grid;
-  width: 17px;
-  height: 17px;
+  width: 16px;
+  height: 16px;
   place-items: center;
   border: 1px solid var(--line-strong);
   border-radius: 999px;
@@ -444,58 +444,44 @@ h3 {
 }
 
 .tooltipBubble {
-  position: absolute;
-  display: none;
-  bottom: calc(100% + 8px);
-  left: 0;
-  z-index: 5;
+  position: fixed;
+  z-index: 80;
   width: min(260px, 72vw);
   pointer-events: none;
   border: 1px solid #1f2937;
   border-radius: 8px;
   background: #111827;
   color: #f8fafc;
-  opacity: 0;
   padding: 9px 10px;
   text-align: left;
   text-transform: none;
-  transform: translateY(4px);
-  transition:
-    opacity 120ms ease,
-    transform 120ms ease;
   font-size: 12px;
   font-weight: 650;
   line-height: 1.35;
   white-space: normal;
 }
 
+.tooltipBubble.top {
+  transform: translateY(-100%);
+}
+
 .tooltipBubble::after {
   position: absolute;
-  top: 100%;
-  left: 14px;
+  left: 50%;
   width: 8px;
   height: 8px;
   background: #111827;
   content: "";
-  transform: translateY(-4px) rotate(45deg);
 }
 
-.headerTooltip:hover .tooltipBubble,
-.headerTooltip:focus-within .tooltipBubble,
-.headerTooltip.open .tooltipBubble {
-  display: block;
-  opacity: 1;
-  transform: translateY(0);
+.tooltipBubble.top::after {
+  top: 100%;
+  transform: translate(-50%, -4px) rotate(45deg);
 }
 
-.resultsTable th:nth-last-child(-n + 2) .tooltipBubble {
-  right: 0;
-  left: auto;
-}
-
-.resultsTable th:nth-last-child(-n + 2) .tooltipBubble::after {
-  right: 14px;
-  left: auto;
+.tooltipBubble.bottom::after {
+  bottom: 100%;
+  transform: translate(-50%, 4px) rotate(45deg);
 }
 
 .resultsTable tbody tr {
@@ -578,14 +564,24 @@ h3 {
 
 .resultsTable th:nth-child(5),
 .resultsTable td:nth-child(5) {
-  width: 86px;
-  min-width: 86px;
+  width: 108px;
+  min-width: 108px;
 }
 
 .resultsTable th:nth-child(6),
 .resultsTable td:nth-child(6) {
-  width: 82px;
-  min-width: 82px;
+  width: 96px;
+  min-width: 96px;
+}
+
+.resultsTable th:nth-child(n + 4),
+.resultsTable td:nth-child(n + 4) {
+  text-align: right;
+}
+
+.resultsTable th:nth-child(n + 4) .headerTooltip {
+  width: 100%;
+  justify-content: flex-end;
 }
 
 .resultsTable th:nth-child(7),
@@ -615,7 +611,7 @@ h3 {
 
 .choiceName {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   max-width: none;
   gap: 9px;
   line-height: 1.25;
@@ -633,11 +629,6 @@ h3 {
   height: 26px;
   flex: 0 0 auto;
   font-size: 12px;
-}
-
-.winnerIcon {
-  color: var(--green);
-  flex: 0 0 auto;
 }
 
 .choiceDetailButton {
@@ -1131,6 +1122,10 @@ h3 {
   text-align: left;
 }
 
+.matchSummary > svg {
+  justify-self: center;
+}
+
 .matchNames,
 .matchScores {
   display: grid;
@@ -1162,6 +1157,7 @@ h3 {
 }
 
 .matchScores span:last-child {
+  grid-column: 3;
   justify-content: flex-end;
 }
 
