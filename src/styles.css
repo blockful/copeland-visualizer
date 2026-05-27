@@ -247,6 +247,85 @@ h3 {
   color: var(--muted);
 }
 
+.statusPanel {
+  display: grid;
+  grid-template-columns: minmax(180px, 260px) minmax(0, 1fr);
+  gap: 14px;
+  align-items: stretch;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 14px;
+}
+
+.statusPanel > div {
+  display: grid;
+  align-content: center;
+  gap: 8px;
+}
+
+.statusValue {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 34px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-2);
+  padding: 6px 12px;
+  font-size: 18px;
+  font-weight: 850;
+  text-transform: capitalize;
+}
+
+.statusValue.success {
+  border-color: #b8e6cf;
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+.statusValue.warning {
+  border-color: #f0d28d;
+  background: var(--amber-soft);
+  color: var(--amber);
+}
+
+.statusValue.neutral {
+  background: var(--surface-2);
+  color: var(--muted);
+}
+
+.countdownGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(90px, 1fr));
+  gap: 8px;
+}
+
+.countdownUnit {
+  display: grid;
+  min-height: 64px;
+  align-content: center;
+  justify-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-2);
+  padding: 8px;
+}
+
+.countdownUnit strong {
+  color: var(--text);
+  font-size: 24px;
+  line-height: 1;
+}
+
+.countdownUnit span {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
 .mainPanel,
 .sidePanel,
 .notice,
@@ -990,6 +1069,10 @@ h3 {
     grid-template-columns: minmax(0, 1fr) 118px 104px;
     gap: 10px;
   }
+
+  .statusPanel {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 640px) {
@@ -1023,6 +1106,10 @@ h3 {
   .voteTableHeader,
   .voteRow {
     grid-template-columns: minmax(0, 1fr) 94px;
+  }
+
+  .countdownGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .voteTableHeader {

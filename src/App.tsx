@@ -58,6 +58,24 @@ function getStateTone(state: string): "success" | "warning" | "neutral" {
   return "neutral";
 }
 
+function getTimeRemaining(endTimestamp?: number | null): number {
+  if (!endTimestamp) {
+    return 0;
+  }
+
+  return Math.max(0, endTimestamp * 1000 - Date.now());
+}
+
+function splitDuration(durationMs: number) {
+  const totalSeconds = Math.max(0, Math.floor(durationMs / 1000));
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  return { days, hours, minutes, seconds };
+}
+
 async function copyTextToClipboard(text: string): Promise<void> {
   if (navigator.clipboard?.writeText) {
     try {
@@ -227,13 +245,12 @@ function App(): JSX.Element {
       {loadState.status === "success" && result && proposal && (
         <main className="dashboard">
           <section className="proposalMeta">
-            <div className={`statePill ${getStateTone(proposal.state)}`}>
-              {proposal.state}
-            </div>
             <div>{proposal.type}</div>
             <div>{formatDate(proposal.start)} to {formatDate(proposal.end)}</div>
             <div>Snapshot {proposal.snapshot || "-"}</div>
           </section>
+
+          <ProposalStatus proposal={proposal} />
 
           {proposal.type !== "copeland" && (
             <section className="notice warningNotice">
@@ -282,6 +299,59 @@ function App(): JSX.Element {
           />
         </main>
       )}
+    </div>
+  );
+}
+
+function ProposalStatus({ proposal }: { proposal: SnapshotDataset["proposal"] }): JSX.Element {
+  const [timeRemaining, setTimeRemaining] = useState(() =>
+    getTimeRemaining(proposal.end)
+  );
+  const countdown = splitDuration(timeRemaining);
+  const hasEnded = Boolean(proposal.end && timeRemaining <= 0);
+
+  useEffect(() => {
+    setTimeRemaining(getTimeRemaining(proposal.end));
+
+    const intervalId = window.setInterval(() => {
+      setTimeRemaining(getTimeRemaining(proposal.end));
+    }, 1000);
+
+    return () => window.clearInterval(intervalId);
+  }, [proposal.end]);
+
+  return (
+    <section className="statusPanel">
+      <div>
+        <div className="eyebrow">Proposal status</div>
+        <div className={`statusValue ${getStateTone(proposal.state)}`}>
+          {proposal.state}
+        </div>
+      </div>
+      <div>
+        <div className="eyebrow">{hasEnded ? "Ended" : "Ends in"}</div>
+        <div className="countdownGrid">
+          <CountdownUnit label="Days" value={countdown.days} />
+          <CountdownUnit label="Hours" value={countdown.hours} />
+          <CountdownUnit label="Minutes" value={countdown.minutes} />
+          <CountdownUnit label="Seconds" value={countdown.seconds} />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CountdownUnit({
+  label,
+  value
+}: {
+  label: string;
+  value: number;
+}): JSX.Element {
+  return (
+    <div className="countdownUnit">
+      <strong>{String(value).padStart(2, "0")}</strong>
+      <span>{label}</span>
     </div>
   );
 }
