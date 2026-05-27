@@ -841,17 +841,30 @@ h3 {
 }
 
 .voteIdentity {
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.voteVoterLine {
+  display: inline-flex;
+  min-width: 0;
   align-items: center;
-  column-gap: 8px;
+  gap: 6px;
 }
 
-.voteIdentity .copyAddressButton {
-  grid-row: 1 / span 2;
+.voteVoterLine .identityLabel {
+  min-width: 0;
 }
 
-.voteRanking {
-  grid-column: 2;
+.voteVoterLine .copyAddressButton {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  border-color: transparent;
+  background: transparent;
+}
+
+.voteVoterLine .copyAddressButton:hover {
+  background: var(--surface-2);
 }
 
 .voteDate,

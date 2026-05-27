@@ -744,12 +744,14 @@ function TopVotes({
         {sortedVotes.map((vote) => (
           <div className="voteRow" key={vote.id}>
             <div className="voteIdentity">
-              <CopyAddressButton
-                address={vote.voter}
-                copied={copiedAddress === vote.voter}
-                onCopy={copyAddress}
-              />
-              <VoterIdentity address={vote.voter} ensLookups={ensLookups} />
+              <div className="voteVoterLine">
+                <VoterIdentity address={vote.voter} ensLookups={ensLookups} />
+                <CopyAddressButton
+                  address={vote.voter}
+                  copied={copiedAddress === vote.voter}
+                  onCopy={copyAddress}
+                />
+              </div>
               <span className="voteRanking">
                 {vote.choice.map((choiceIndex) => choices[choiceIndex - 1]).join(" > ")}
               </span>
