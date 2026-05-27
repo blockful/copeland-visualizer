@@ -446,7 +446,7 @@ function ResultsTable({
                 Average pairwise margin for this choice. Positive means it tends to beat opponents.
               </HeaderTooltip>
             </th>
-            <th aria-label="Details" />
+            <th>Details</th>
           </tr>
         </thead>
         <tbody>
@@ -468,6 +468,7 @@ function ResultsTable({
                     <span className="choiceNumber">{choice.index + 1}</span>
                     <span>{choice.name}</span>
                     {choice.rank === 1 && <Trophy size={15} className="winnerIcon" />}
+                    <span className="detailsHint">View details</span>
                   </div>
                 </td>
                 <td className="scoreCell">
@@ -499,6 +500,7 @@ function ResultsTable({
                     }}
                     aria-label={`Open details for ${choice.name}`}
                   >
+                    <span>Details</span>
                     <ChevronRight size={18} />
                   </button>
                 </td>

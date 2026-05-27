@@ -457,11 +457,26 @@ h3 {
 
 .resultsTable tbody tr {
   cursor: pointer;
-  transition: background 120ms ease;
+  transition:
+    background 120ms ease,
+    box-shadow 120ms ease;
 }
 
 .resultsTable tbody tr:hover {
   background: #f9fbff;
+  box-shadow: inset 3px 0 0 var(--blue);
+}
+
+.resultsTable tbody tr:hover .choiceName > span:nth-child(2) {
+  color: var(--blue);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.resultsTable tbody tr:hover .rowButton {
+  border-color: var(--blue);
+  background: var(--blue);
+  color: #ffffff;
 }
 
 .rankBadge,
@@ -502,6 +517,21 @@ h3 {
   flex: 0 0 auto;
 }
 
+.detailsHint {
+  display: none;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: var(--blue-soft);
+  color: var(--blue);
+  padding: 3px 7px;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.resultsTable tbody tr:hover .detailsHint {
+  display: inline-flex;
+}
+
 .scoreCell {
   min-width: 190px;
 }
@@ -534,8 +564,11 @@ h3 {
 }
 
 .rowButton {
-  width: 32px;
+  min-width: 94px;
   height: 32px;
+  gap: 6px;
+  padding: 0 10px;
+  font-weight: 800;
 }
 
 .positive {
