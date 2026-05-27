@@ -409,7 +409,12 @@ h3 {
 }
 
 .resultsTable {
-  min-width: 1240px;
+  --choice-column-width: 220px;
+  --rank-column-width: 68px;
+  min-width: 1040px;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
 }
 
 .resultsTable th,
@@ -523,6 +528,79 @@ h3 {
     inset -1px 0 0 var(--line-strong);
 }
 
+.resultsTable th:nth-child(1),
+.resultsTable td:nth-child(1) {
+  left: 0;
+  width: var(--rank-column-width);
+  min-width: var(--rank-column-width);
+}
+
+.resultsTable th:nth-child(2),
+.resultsTable td:nth-child(2) {
+  left: var(--rank-column-width);
+  width: var(--choice-column-width);
+  min-width: var(--choice-column-width);
+}
+
+.resultsTable th:nth-child(1),
+.resultsTable th:nth-child(2),
+.resultsTable td:nth-child(1),
+.resultsTable td:nth-child(2) {
+  position: sticky;
+  z-index: 2;
+  background: var(--surface);
+}
+
+.resultsTable th:nth-child(1),
+.resultsTable th:nth-child(2) {
+  z-index: 3;
+}
+
+.resultsTable th:nth-child(2),
+.resultsTable td:nth-child(2) {
+  box-shadow: 1px 0 0 var(--line);
+}
+
+.resultsTable tbody tr:hover td:nth-child(2) {
+  box-shadow:
+    inset 0 1px 0 var(--line-strong),
+    1px 0 0 var(--line);
+}
+
+.resultsTable th:nth-child(3),
+.resultsTable td:nth-child(3) {
+  width: 170px;
+  min-width: 170px;
+}
+
+.resultsTable th:nth-child(4),
+.resultsTable td:nth-child(4) {
+  width: 112px;
+  min-width: 112px;
+}
+
+.resultsTable th:nth-child(5),
+.resultsTable td:nth-child(5) {
+  width: 86px;
+  min-width: 86px;
+}
+
+.resultsTable th:nth-child(6),
+.resultsTable td:nth-child(6) {
+  width: 82px;
+  min-width: 82px;
+}
+
+.resultsTable th:nth-child(7),
+.resultsTable td:nth-child(7),
+.resultsTable th:nth-child(8),
+.resultsTable td:nth-child(8),
+.resultsTable th:nth-child(9),
+.resultsTable td:nth-child(9) {
+  width: 94px;
+  min-width: 94px;
+}
+
 .rankBadge,
 .choiceNumber {
   display: inline-grid;
@@ -555,12 +633,6 @@ h3 {
   overflow-wrap: break-word;
 }
 
-.resultsTable th:nth-child(2),
-.resultsTable td:nth-child(2) {
-  width: 240px;
-  min-width: 240px;
-}
-
 .choiceNumber {
   width: 26px;
   height: 26px;
@@ -574,11 +646,11 @@ h3 {
 }
 
 .scoreCell {
-  min-width: 190px;
+  min-width: 170px;
 }
 
 .scoreBar {
-  width: 150px;
+  width: 126px;
   height: 8px;
   overflow: hidden;
   border-radius: 999px;
