@@ -210,24 +210,6 @@ h3 {
   gap: 18px;
 }
 
-.proposalMeta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-  color: var(--muted);
-}
-
-.proposalMeta > div {
-  min-height: 28px;
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--surface);
-  padding: 5px 9px;
-}
-
 .statePill {
   font-weight: 800;
   text-transform: capitalize;

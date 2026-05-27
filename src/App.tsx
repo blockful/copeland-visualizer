@@ -238,12 +238,6 @@ function App(): JSX.Element {
 
       {loadState.status === "success" && result && proposal && (
         <main className="dashboard">
-          <section className="proposalMeta">
-            <div>{proposal.type}</div>
-            <div>{formatDate(proposal.start)} to {formatDate(proposal.end)}</div>
-            <div>Snapshot {proposal.snapshot || "-"}</div>
-          </section>
-
           <ProposalStatus proposal={proposal} snapshotLink={snapshotLink} />
 
           {proposal.type !== "copeland" && (
