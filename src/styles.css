@@ -445,6 +445,7 @@ h3 {
 
 .tooltipBubble {
   position: absolute;
+  display: none;
   bottom: calc(100% + 8px);
   left: 0;
   z-index: 5;
@@ -482,8 +483,19 @@ h3 {
 .headerTooltip:hover .tooltipBubble,
 .headerTooltip:focus-within .tooltipBubble,
 .headerTooltip.open .tooltipBubble {
+  display: block;
   opacity: 1;
   transform: translateY(0);
+}
+
+.resultsTable th:nth-last-child(-n + 2) .tooltipBubble {
+  right: 0;
+  left: auto;
+}
+
+.resultsTable th:nth-last-child(-n + 2) .tooltipBubble::after {
+  right: 14px;
+  left: auto;
 }
 
 .resultsTable tbody tr {
@@ -1388,36 +1400,82 @@ h3 {
     left: 0;
   }
 
-  .voteTableHeader,
-  .voteRow {
-    grid-template-columns: minmax(0, 1fr) 120px;
-  }
-
   .countdownGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .voteTableHeader {
-    row-gap: 8px;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 10px 12px;
   }
 
   .voteTableHeader > div {
-    grid-column: 1 / -1;
+    display: none;
   }
 
   .voteSortButton {
-    justify-content: flex-start;
-    text-align: left;
+    min-height: 34px;
+    justify-content: center;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+    padding: 0 10px;
+    text-align: center;
   }
 
-  .voteDate {
-    grid-column: 2;
+  .voteSortButton.active {
+    border-color: var(--line-strong);
+    background: var(--surface-3);
+  }
+
+  .voteRow {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px 10px;
+    align-items: start;
+    padding: 12px;
+  }
+
+  .voteRow > .voteIdentity {
+    display: contents;
+  }
+
+  .voteVoterLine {
+    grid-column: 1;
     grid-row: 1;
   }
 
-  .votePower {
-    grid-column: 2;
+  .voteRow > .voteDate {
+    grid-column: 1 / -1;
     grid-row: 2;
+    display: block;
+    text-align: left;
+    font-size: 12px;
+  }
+
+  .voteRow > .votePower {
+    display: inline-flex;
+    grid-column: 2;
+    grid-row: 1;
+    min-height: 28px;
+    align-items: center;
+    justify-content: flex-end;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface-2);
+    padding: 3px 8px;
+    font-size: 12px;
+  }
+
+  .voteRow .voteRanking {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    display: -webkit-box;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
   .drawerStats,
