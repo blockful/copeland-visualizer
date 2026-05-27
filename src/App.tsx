@@ -331,6 +331,7 @@ function ProposalStatus({ proposal }: { proposal: SnapshotDataset["proposal"] })
   );
   const countdown = splitDuration(timeRemaining);
   const hasEnded = Boolean(proposal.end && timeRemaining <= 0);
+  const countdownLabel = `${countdown.days} days, ${countdown.hours} hours, ${countdown.minutes} minutes, ${countdown.seconds} seconds`;
 
   useEffect(() => {
     setTimeRemaining(getTimeRemaining(proposal.end));
@@ -352,11 +353,11 @@ function ProposalStatus({ proposal }: { proposal: SnapshotDataset["proposal"] })
       </div>
       <div>
         <div className="eyebrow">{hasEnded ? "Ended" : "Ends in"}</div>
-        <div className="countdownGrid">
-          <CountdownUnit label="Days" value={countdown.days} />
-          <CountdownUnit label="Hours" value={countdown.hours} />
-          <CountdownUnit label="Minutes" value={countdown.minutes} />
-          <CountdownUnit label="Seconds" value={countdown.seconds} />
+        <div className="countdownGrid" aria-label={countdownLabel}>
+          <CountdownUnit label="d" value={countdown.days} />
+          <CountdownUnit label="h" value={countdown.hours} />
+          <CountdownUnit label="m" value={countdown.minutes} />
+          <CountdownUnit label="s" value={countdown.seconds} />
         </div>
       </div>
     </section>

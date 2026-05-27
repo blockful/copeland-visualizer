@@ -248,32 +248,33 @@ h3 {
 }
 
 .statusPanel {
-  display: grid;
-  grid-template-columns: minmax(180px, 260px) minmax(0, 1fr);
-  gap: 14px;
-  align-items: stretch;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 18px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--surface);
-  padding: 14px;
+  padding: 10px 12px;
 }
 
 .statusPanel > div {
-  display: grid;
-  align-content: center;
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
   gap: 8px;
 }
 
 .statusValue {
   display: inline-flex;
   width: fit-content;
-  min-height: 34px;
+  min-height: 28px;
   align-items: center;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--surface-2);
-  padding: 6px 12px;
-  font-size: 18px;
+  padding: 4px 10px;
+  font-size: 14px;
   font-weight: 850;
   text-transform: capitalize;
 }
@@ -296,32 +297,31 @@ h3 {
 }
 
 .countdownGrid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(90px, 1fr));
-  gap: 8px;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
 }
 
 .countdownUnit {
-  display: grid;
-  min-height: 64px;
-  align-content: center;
-  justify-items: center;
+  display: inline-flex;
+  min-height: 28px;
+  align-items: baseline;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--surface-2);
-  padding: 8px;
+  padding: 4px 7px;
 }
 
 .countdownUnit strong {
   color: var(--text);
-  font-size: 24px;
+  font-size: 14px;
   line-height: 1;
 }
 
 .countdownUnit span {
-  margin-top: 6px;
+  margin-left: 2px;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 800;
   text-transform: uppercase;
 }
@@ -372,7 +372,7 @@ h3 {
 }
 
 .resultsTable {
-  min-width: 1040px;
+  min-width: 1240px;
 }
 
 .resultsTable th,
@@ -502,11 +502,23 @@ h3 {
 
 .choiceName {
   display: flex;
-  align-items: center;
-  max-width: 330px;
+  align-items: flex-start;
+  max-width: none;
   gap: 9px;
-  overflow-wrap: anywhere;
+  line-height: 1.25;
+  overflow-wrap: normal;
   font-weight: 760;
+}
+
+.choiceName > span:nth-child(2) {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.resultsTable th:nth-child(2),
+.resultsTable td:nth-child(2) {
+  width: 240px;
+  min-width: 240px;
 }
 
 .choiceNumber {
