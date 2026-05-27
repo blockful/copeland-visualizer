@@ -715,7 +715,7 @@ function TopVotes({
         </div>
         <div className="voteStats">
           <span>{formatNumber(votes.length, 0)} votes</span>
-          <span>{formatNumber(result.totalVotingPower)} voting power</span>
+          <span>{formatCompact(result.totalVotingPower)} voting power</span>
           {result.invalidVotes.length > 0 && (
             <span>{formatNumber(result.invalidVotes.length, 0)} invalid</span>
           )}

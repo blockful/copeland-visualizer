@@ -13,9 +13,13 @@ export function formatCompact(value: number): string {
     return "0";
   }
 
+  if (Math.abs(value) < 1000) {
+    return formatNumber(value, 0);
+  }
+
   return new Intl.NumberFormat(undefined, {
     notation: "compact",
-    maximumFractionDigits: 2
+    maximumFractionDigits: 0
   }).format(value);
 }
 
