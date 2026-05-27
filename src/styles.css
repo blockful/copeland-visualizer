@@ -1378,6 +1378,16 @@ h3 {
     margin-left: 0;
   }
 
+  .resultsTable th:nth-child(1),
+  .resultsTable td:nth-child(1) {
+    position: static;
+  }
+
+  .resultsTable th:nth-child(2),
+  .resultsTable td:nth-child(2) {
+    left: 0;
+  }
+
   .voteTableHeader,
   .voteRow {
     grid-template-columns: minmax(0, 1fr) 120px;
