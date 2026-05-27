@@ -1,11 +1,9 @@
 import {
   AlertCircle,
-  ArrowDownWideNarrow,
   Check,
   ChevronDown,
   ChevronRight,
   ChevronUp,
-  Clock,
   Copy,
   ExternalLink,
   RefreshCw,
@@ -548,6 +546,16 @@ function TopVotes({
     });
   }
 
+  function handleSortClick(nextSortBy: "vp" | "timestamp") {
+    if (sortBy === nextSortBy) {
+      setSortDirection((current) => (current === "asc" ? "desc" : "asc"));
+      return;
+    }
+
+    setSortBy(nextSortBy);
+    setSortDirection("desc");
+  }
+
   return (
     <section className="mainPanel">
       <div className="sectionHeader">
@@ -555,35 +563,25 @@ function TopVotes({
           <div className="eyebrow">Votes</div>
           <h2>All ranked ballots</h2>
         </div>
-        <div className="voteControls" role="group" aria-label="Sort votes">
-          <button
-            className={sortBy === "vp" ? "segmentButton active" : "segmentButton"}
-            onClick={() => setSortBy("vp")}
-            type="button"
-          >
-            <ArrowDownWideNarrow size={15} />
-            VP
-          </button>
-          <button
-            className={sortBy === "timestamp" ? "segmentButton active" : "segmentButton"}
-            onClick={() => setSortBy("timestamp")}
-            type="button"
-          >
-            <Clock size={15} />
-            Time
-          </button>
-          <button
-            className="segmentButton directionButton"
-            onClick={() =>
-              setSortDirection((current) => (current === "asc" ? "desc" : "asc"))
-            }
-            type="button"
-            aria-label={`Sort ${sortDirection === "asc" ? "ascending" : "descending"}`}
-          >
-            {sortDirection === "asc" ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
-            {sortDirection === "asc" ? "Asc" : "Desc"}
-          </button>
-        </div>
+      </div>
+      <div className="voteTableHeader">
+        <div>Voter</div>
+        <button
+          className={sortBy === "timestamp" ? "voteSortButton active" : "voteSortButton"}
+          onClick={() => handleSortClick("timestamp")}
+          type="button"
+        >
+          Date
+          <SortArrow active={sortBy === "timestamp"} direction={sortDirection} />
+        </button>
+        <button
+          className={sortBy === "vp" ? "voteSortButton active" : "voteSortButton"}
+          onClick={() => handleSortClick("vp")}
+          type="button"
+        >
+          Voting power
+          <SortArrow active={sortBy === "vp"} direction={sortDirection} />
+        </button>
       </div>
       <div className="voteList">
         {sortedVotes.map((vote) => (
@@ -599,15 +597,27 @@ function TopVotes({
                 {vote.choice.map((choiceIndex) => choices[choiceIndex - 1]).join(" > ")}
               </span>
             </div>
-            <div className="voteMeta">
-              <strong>{formatCompact(vote.vp)}</strong>
-              <span>{formatDate(vote.created)}</span>
-            </div>
+            <div className="voteDate">{formatDate(vote.created)}</div>
+            <div className="votePower">{formatCompact(vote.vp)}</div>
           </div>
         ))}
       </div>
     </section>
   );
+}
+
+function SortArrow({
+  active,
+  direction
+}: {
+  active: boolean;
+  direction: "asc" | "desc";
+}): JSX.Element | null {
+  if (!active) {
+    return null;
+  }
+
+  return direction === "asc" ? <ChevronUp size={16} /> : <ChevronDown size={16} />;
 }
 
 function DetailsDrawer({
