@@ -384,14 +384,46 @@ function ResultsTable({
       <table className="resultsTable">
         <thead>
           <tr>
-            <th>Rank</th>
-            <th>Choice</th>
-            <th>Computed score</th>
-            <th>Snapshot score</th>
-            <th>Copeland</th>
-            <th>Record</th>
-            <th>Avg support</th>
-            <th>Avg margin</th>
+            <th>
+              <HeaderTooltip label="Rank">
+                Position after sorting choices by locally computed Copeland score.
+              </HeaderTooltip>
+            </th>
+            <th>
+              <HeaderTooltip label="Choice">
+                Proposal option from Snapshot. The numbered badge matches Snapshot's choice order.
+              </HeaderTooltip>
+            </th>
+            <th>
+              <HeaderTooltip label="Computed score">
+                Local normalized Copeland score. Copeland points are scaled across total voting power.
+              </HeaderTooltip>
+            </th>
+            <th>
+              <HeaderTooltip label="Snapshot score">
+                Score returned by Snapshot for this proposal in the Snapshot API response.
+              </HeaderTooltip>
+            </th>
+            <th>
+              <HeaderTooltip label="Copeland">
+                Raw Copeland points from pairwise matchups: 1 for a win, 0.5 for a tie, 0 for a loss.
+              </HeaderTooltip>
+            </th>
+            <th>
+              <HeaderTooltip label="Record">
+                Pairwise result record shown as wins-draws-losses.
+              </HeaderTooltip>
+            </th>
+            <th>
+              <HeaderTooltip label="Avg support">
+                Average voting power supporting this choice across all head-to-head matchups.
+              </HeaderTooltip>
+            </th>
+            <th>
+              <HeaderTooltip label="Avg margin">
+                Average pairwise margin for this choice. Positive means it tends to beat opponents.
+              </HeaderTooltip>
+            </th>
             <th aria-label="Details" />
           </tr>
         </thead>
@@ -465,6 +497,42 @@ function Footer(): JSX.Element {
         blockful
       </a>
     </footer>
+  );
+}
+
+function HeaderTooltip({
+  label,
+  children
+}: {
+  label: string;
+  children: string;
+}): JSX.Element {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <span
+      className={isOpen ? "headerTooltip open" : "headerTooltip"}
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+      onFocus={() => setIsOpen(true)}
+      onBlur={() => setIsOpen(false)}
+    >
+      <span>{label}</span>
+      <button
+        type="button"
+        aria-label={`${label}: ${children}`}
+        aria-expanded={isOpen}
+        onClick={(event) => {
+          event.stopPropagation();
+          setIsOpen((current) => !current);
+        }}
+      >
+        ?
+      </button>
+      <span className="tooltipBubble" role="tooltip">
+        {children}
+      </span>
+    </span>
   );
 }
 

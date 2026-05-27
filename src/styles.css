@@ -389,6 +389,72 @@ h3 {
   text-transform: uppercase;
 }
 
+.headerTooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.headerTooltip button {
+  display: inline-grid;
+  width: 17px;
+  height: 17px;
+  place-items: center;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: help;
+  padding: 0;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.tooltipBubble {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  z-index: 5;
+  width: min(260px, 72vw);
+  pointer-events: none;
+  border: 1px solid #1f2937;
+  border-radius: 8px;
+  background: #111827;
+  color: #f8fafc;
+  opacity: 0;
+  padding: 9px 10px;
+  text-align: left;
+  text-transform: none;
+  transform: translateY(4px);
+  transition:
+    opacity 120ms ease,
+    transform 120ms ease;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.35;
+  white-space: normal;
+}
+
+.tooltipBubble::after {
+  position: absolute;
+  top: 100%;
+  left: 14px;
+  width: 8px;
+  height: 8px;
+  background: #111827;
+  content: "";
+  transform: translateY(-4px) rotate(45deg);
+}
+
+.headerTooltip:hover .tooltipBubble,
+.headerTooltip:focus-within .tooltipBubble,
+.headerTooltip.open .tooltipBubble {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .resultsTable tbody tr {
   cursor: pointer;
   transition: background 120ms ease;
