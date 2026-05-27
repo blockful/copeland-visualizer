@@ -9,7 +9,6 @@ import {
   RefreshCw,
   Search,
   Trophy,
-  Vote,
   X
 } from "lucide-react";
 import { FormEvent, useEffect, useMemo, useState } from "react";
@@ -236,8 +235,6 @@ function App(): JSX.Element {
             <div>Snapshot {proposal.snapshot || "-"}</div>
           </section>
 
-          <SummaryGrid dataset={loadState.dataset} result={result} />
-
           {proposal.type !== "copeland" && (
             <section className="notice warningNotice">
               <AlertCircle size={18} />
@@ -273,7 +270,7 @@ function App(): JSX.Element {
             </aside>
           </section>
 
-          <TopVotes votes={result.validVotes} choices={proposal.choices} />
+          <TopVotes result={result} choices={proposal.choices} />
 
           <Footer />
 
@@ -297,70 +294,6 @@ function LoadingState(): JSX.Element {
         <span>Loading Snapshot data...</span>
       </section>
     </main>
-  );
-}
-
-function SummaryGrid({
-  dataset,
-  result
-}: {
-  dataset: SnapshotDataset;
-  result: CopelandResult;
-}): JSX.Element {
-  const proposal = dataset.proposal;
-  const winner = result.rankedChoices[0];
-  const snapshotTotal = proposal.scores_total ?? 0;
-  const quorum = proposal.quorum ?? 0;
-  const quorumProgress = quorum > 0 ? snapshotTotal / quorum : 0;
-
-  return (
-    <section className="summaryGrid">
-      <SummaryTile label="Leader" value={winner?.name || "-"} icon={<Trophy size={18} />} />
-      <SummaryTile
-        label="Voting power"
-        value={formatNumber(result.totalVotingPower)}
-        detail={`Snapshot ${formatNumber(snapshotTotal)}`}
-        icon={<Vote size={18} />}
-      />
-      <SummaryTile
-        label="Votes"
-        value={formatNumber(result.validVotes.length, 0)}
-        detail={`${formatNumber(result.invalidVotes.length, 0)} invalid`}
-      />
-      <SummaryTile
-        label="Quorum"
-        value={quorum ? formatPercent(quorumProgress) : "-"}
-        detail={quorum ? formatCompact(quorum) : "No quorum value"}
-      />
-      <SummaryTile
-        label="Scores"
-        value={proposal.scores_state || "-"}
-        detail={`${proposal.choices.length} choices`}
-      />
-    </section>
-  );
-}
-
-function SummaryTile({
-  label,
-  value,
-  detail,
-  icon
-}: {
-  label: string;
-  value: string;
-  detail?: string;
-  icon?: JSX.Element;
-}): JSX.Element {
-  return (
-    <div className="summaryTile">
-      <div className="tileLabel">
-        {icon}
-        <span>{label}</span>
-      </div>
-      <strong>{value}</strong>
-      {detail && <small>{detail}</small>}
-    </div>
   );
 }
 
@@ -513,14 +446,15 @@ function PairwiseMatrix({
 }
 
 function TopVotes({
-  votes,
+  result,
   choices
 }: {
-  votes: RankedVote[];
+  result: CopelandResult;
   choices: string[];
 }): JSX.Element {
   const [sortBy, setSortBy] = useState<"vp" | "timestamp">("vp");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
+  const votes = result.validVotes;
   const sortedVotes = [...votes].sort((a, b) => {
     const direction = sortDirection === "asc" ? 1 : -1;
 
@@ -562,6 +496,13 @@ function TopVotes({
         <div>
           <div className="eyebrow">Votes</div>
           <h2>All ranked ballots</h2>
+        </div>
+        <div className="voteStats">
+          <span>{formatNumber(votes.length, 0)} votes</span>
+          <span>{formatNumber(result.totalVotingPower)} voting power</span>
+          {result.invalidVotes.length > 0 && (
+            <span>{formatNumber(result.invalidVotes.length, 0)} invalid</span>
+          )}
         </div>
       </div>
       <div className="voteTableHeader">

@@ -247,13 +247,6 @@ h3 {
   color: var(--muted);
 }
 
-.summaryGrid {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(150px, 1fr));
-  gap: 10px;
-}
-
-.summaryTile,
 .mainPanel,
 .sidePanel,
 .notice,
@@ -261,40 +254,6 @@ h3 {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--surface);
-}
-
-.summaryTile {
-  display: grid;
-  min-height: 116px;
-  align-content: space-between;
-  gap: 10px;
-  padding: 14px;
-}
-
-.tileLabel {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-.summaryTile strong {
-  display: -webkit-box;
-  overflow: hidden;
-  color: var(--text);
-  font-size: 21px;
-  line-height: 1.16;
-  overflow-wrap: anywhere;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-
-.summaryTile small {
-  color: var(--muted);
-  font-weight: 650;
 }
 
 .contentGrid {
@@ -570,6 +529,26 @@ h3 {
 
 .voteList {
   display: grid;
+}
+
+.voteStats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.voteStats span {
+  display: inline-flex;
+  min-height: 28px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-2);
+  color: var(--muted);
+  padding: 4px 9px;
+  font-size: 12px;
+  font-weight: 800;
 }
 
 .voteTableHeader {
@@ -992,10 +971,6 @@ h3 {
 }
 
 @media (max-width: 860px) {
-  .summaryGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .queryForm {
     display: grid;
     grid-template-columns: 1fr 1fr auto auto auto;
@@ -1041,8 +1016,8 @@ h3 {
     flex-direction: column;
   }
 
-  .summaryGrid {
-    grid-template-columns: 1fr;
+  .voteStats {
+    justify-content: flex-start;
   }
 
   .voteTableHeader,
