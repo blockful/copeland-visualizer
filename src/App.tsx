@@ -223,16 +223,6 @@ function App(): JSX.Element {
           >
             <RefreshCw size={17} />
           </button>
-          <a
-            className="iconButton"
-            href={snapshotLink}
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Open on Snapshot"
-            title="Snapshot"
-          >
-            <ExternalLink size={17} />
-          </a>
         </form>
       </header>
 
@@ -253,7 +243,7 @@ function App(): JSX.Element {
             <div>Snapshot {proposal.snapshot || "-"}</div>
           </section>
 
-          <ProposalStatus proposal={proposal} />
+          <ProposalStatus proposal={proposal} snapshotLink={snapshotLink} />
 
           {proposal.type !== "copeland" && (
             <section className="notice warningNotice">
@@ -325,13 +315,20 @@ function App(): JSX.Element {
   );
 }
 
-function ProposalStatus({ proposal }: { proposal: SnapshotDataset["proposal"] }): JSX.Element {
+function ProposalStatus({
+  proposal,
+  snapshotLink
+}: {
+  proposal: SnapshotDataset["proposal"];
+  snapshotLink: string;
+}): JSX.Element {
   const [timeRemaining, setTimeRemaining] = useState(() =>
     getTimeRemaining(proposal.end)
   );
   const countdown = splitDuration(timeRemaining);
   const hasEnded = Boolean(proposal.end && timeRemaining <= 0);
   const countdownLabel = `${countdown.days} days, ${countdown.hours} hours, ${countdown.minutes} minutes, ${countdown.seconds} seconds`;
+  const isActive = proposal.state === "active";
 
   useEffect(() => {
     setTimeRemaining(getTimeRemaining(proposal.end));
@@ -360,6 +357,15 @@ function ProposalStatus({ proposal }: { proposal: SnapshotDataset["proposal"] })
           <CountdownUnit label="s" value={countdown.seconds} />
         </div>
       </div>
+      <a
+        className={isActive ? "snapshotStatusLink active" : "snapshotStatusLink"}
+        href={snapshotLink}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <span>{isActive ? "Vote on Snapshot" : "See vote on Snapshot"}</span>
+        <ExternalLink size={15} />
+      </a>
     </section>
   );
 }
