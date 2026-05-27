@@ -339,11 +339,14 @@ h3 {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(360px, 430px);
   gap: 18px;
-  align-items: start;
+  align-items: stretch;
 }
 
 .mainPanel,
 .sidePanel {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
   overflow: hidden;
 }
 
@@ -358,6 +361,7 @@ h3 {
 
 .tableScroll,
 .matrixScroll {
+  flex: 1 1 auto;
   overflow-x: auto;
 }
 
