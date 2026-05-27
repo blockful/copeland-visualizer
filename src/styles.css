@@ -627,6 +627,54 @@ h3 {
   color: var(--muted);
 }
 
+.matrixModalLayer {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  padding: 18px;
+}
+
+.matrixModalBackdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 24, 31, 0.54);
+  cursor: pointer;
+}
+
+.matrixModal {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  width: min(1180px, 100%);
+  max-height: calc(100vh - 36px);
+  margin: auto;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.matrixModalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  border-bottom: 1px solid var(--line);
+  padding: 16px;
+}
+
+.matrixModal .matrixScroll {
+  max-height: calc(100vh - 132px);
+  overflow: auto;
+}
+
+.matrixModal .matrixTable {
+  min-width: 760px;
+}
+
 .notice {
   display: flex;
   align-items: center;

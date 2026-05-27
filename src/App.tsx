@@ -6,6 +6,7 @@ import {
   ChevronUp,
   Copy,
   ExternalLink,
+  Maximize2,
   RefreshCw,
   Search,
   Trophy,
@@ -110,11 +111,13 @@ function App(): JSX.Element {
   const [loadState, setLoadState] = useState<LoadState>({ status: "loading" });
   const [refreshKey, setRefreshKey] = useState(0);
   const [selectedChoiceId, setSelectedChoiceId] = useState<number | null>(null);
+  const [isMatrixOpen, setIsMatrixOpen] = useState(false);
 
   useEffect(() => {
     const abortController = new AbortController();
     setLoadState({ status: "loading" });
     setSelectedChoiceId(null);
+    setIsMatrixOpen(false);
 
     fetchSnapshotDataset(config.proposalId, abortController.signal)
       .then((dataset) => {
@@ -279,6 +282,15 @@ function App(): JSX.Element {
                   <div className="eyebrow">Pairwise</div>
                   <h2>Matrix</h2>
                 </div>
+                <button
+                  type="button"
+                  className="iconButton"
+                  onClick={() => setIsMatrixOpen(true)}
+                  aria-label="Open matrix full screen"
+                  title="Open full screen"
+                >
+                  <Maximize2 size={17} />
+                </button>
               </div>
               <PairwiseMatrix
                 result={result}
@@ -296,6 +308,16 @@ function App(): JSX.Element {
             choice={selectedChoice}
             result={result}
             onClose={() => setSelectedChoiceId(null)}
+          />
+
+          <MatrixModal
+            open={isMatrixOpen}
+            result={result}
+            onClose={() => setIsMatrixOpen(false)}
+            onSelectChoice={(choiceId) => {
+              setIsMatrixOpen(false);
+              setSelectedChoiceId(choiceId);
+            }}
           />
         </main>
       )}
@@ -579,6 +601,60 @@ function PairwiseMatrix({
           ))}
         </tbody>
       </table>
+    </div>
+  );
+}
+
+function MatrixModal({
+  open,
+  result,
+  onClose,
+  onSelectChoice
+}: {
+  open: boolean;
+  result: CopelandResult;
+  onClose: () => void;
+  onSelectChoice: (choiceId: number) => void;
+}): JSX.Element | null {
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open, onClose]);
+
+  if (!open) {
+    return null;
+  }
+
+  return (
+    <div className="matrixModalLayer" role="dialog" aria-modal="true" aria-label="Full screen pairwise matrix">
+      <div className="matrixModalBackdrop" onClick={onClose} aria-hidden="true" />
+      <section className="matrixModal">
+        <div className="matrixModalHeader">
+          <div>
+            <div className="eyebrow">Pairwise</div>
+            <h2>Matrix</h2>
+          </div>
+          <button className="iconButton" onClick={onClose} aria-label="Close matrix">
+            <X size={18} />
+          </button>
+        </div>
+        <PairwiseMatrix result={result} onSelectChoice={onSelectChoice} />
+      </section>
     </div>
   );
 }
