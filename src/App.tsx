@@ -462,7 +462,7 @@ function Footer(): JSX.Element {
     <footer className="footer">
       <span>Powered by</span>
       <a href="https://blockful.io" target="_blank" rel="noreferrer">
-        Blockful
+        blockful
       </a>
     </footer>
   );
